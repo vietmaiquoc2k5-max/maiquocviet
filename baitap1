@@ -1,0 +1,133 @@
+using System;
+
+namespace GiaiPhuongTrinh
+{
+    class PhuongTrinhBac1
+    {
+        protected double a, b;
+
+        public PhuongTrinhBac1(double a, double b)
+        {
+            this.a = a;
+            this.b = b;
+        }
+
+        public virtual void Giai()
+        {
+            if (a == 0)
+            {
+                if (b == 0)
+                    Console.WriteLine(" Phương trình có vô số nghiệm.");
+                else
+                    Console.WriteLine(" Phương trình vô nghiệm.");
+            }
+            else
+            {
+                double x = -b / a;
+                Console.WriteLine($" Phương trình có nghiệm x = {x}");
+            }
+        }
+    }
+
+
+    class PhuongTrinhBac2 : PhuongTrinhBac1
+    {
+        private double c;
+
+
+        public PhuongTrinhBac2(double a, double b, double c) : base(a, b)
+        {
+            this.c = c;
+        }
+
+        public override void Giai()
+        {
+            if (a == 0)
+            {
+                PhuongTrinhBac1 phuongTrinhBac1 = new PhuongTrinhBac1(b, c);
+                Console.WriteLine("\nPhương trình trở thành bậc 1:");
+                phuongTrinhBac1.Giai();
+            }
+            else
+            {
+                double delta = b * b - 4 * a * c;
+
+                if (delta < 0)
+                {
+                    Console.WriteLine(" Phương trình vô nghiệm.");
+                }
+                else if (delta == 0)
+                {
+                    double x = -b / (2 * a);
+                    Console.WriteLine($" Phương trình có nghiệm kép x = {x}");
+                }
+                else
+                {
+                    double x1 = (-b + Math.Sqrt(delta)) / (2 * a);
+                    double x2 = (-b - Math.Sqrt(delta)) / (2 * a);
+                    Console.WriteLine(" Phương trình có 2 nghiệm phân biệt:");
+                    Console.WriteLine($"x1 = {x1}");
+                    Console.WriteLine($"x2 = {x2}");
+                }
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main()
+        {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.InputEncoding = System.Text.Encoding.UTF8;
+
+            int luaChon;
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("===== CHƯƠNG TRÌNH GIẢI PHƯƠNG TRÌNH BẬC 2 =====");
+                Console.WriteLine("1. Nhập và giải phương trình bậc 2");
+                Console.WriteLine("2. Thoát chương trình");
+                Console.Write(" chọn (1-2): ");
+
+                bool hopLe = int.TryParse(Console.ReadLine(), out luaChon);
+
+                if (!hopLe)
+                {
+                    Console.WriteLine(" Lựa chọn không hợp lệ! Nhấn phím bất kỳ để thử lại...");
+                    Console.ReadKey();
+                    continue;
+                }
+
+                switch (luaChon)
+                {
+                    case 1:
+                        Console.Write("\nNhập a = ");
+                        double a = double.Parse(Console.ReadLine());
+                        Console.Write("Nhập b = ");
+                        double b = double.Parse(Console.ReadLine());
+                        Console.Write("Nhập c = ");
+                        double c = double.Parse(Console.ReadLine());
+
+                        PhuongTrinhBac2 pt2 = new PhuongTrinhBac2(a, b, c);
+                        Console.WriteLine();
+                        pt2.Giai();
+
+                        Console.WriteLine("\nNhấn phím bất kỳ để quay lại menu...");
+                        Console.ReadKey();
+                        break;
+
+                    case 2:
+                        Console.WriteLine("\n Cảm ơn đã sử dụng chương trình. Hẹn gặp lại!");
+                        break;
+
+                    default:
+                        Console.WriteLine("\n Lựa chọn không tồn tại! Nhấn phím bất kỳ để thử lại...");
+                        Console.ReadKey();
+                        break;
+                }
+
+            } while (luaChon != 2);
+        }
+    }
+}
